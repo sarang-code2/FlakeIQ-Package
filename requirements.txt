@@ -1,4 +1,0 @@
-# No external dependencies required.
-# Uses only stdlib: sqlite3, json, http.server, urllib
-# Ollama must be running for classification:
-#   brew install ollama && ollama pull llama3.2
