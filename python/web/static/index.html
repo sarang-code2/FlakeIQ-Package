@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlakeIQ Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+<h1>FlakeIQ</h1>
+<p class="subtitle">Test flake tracker &mdash; <span id="recordCount">0</span> records &middot; <span id="dateRange"></span></p>
+<div class="dashboard">
+<div class="stats-row" id="statsRow"></div>
+
+<div class="card"><h2>Flake Rate (7d Moving Avg)</h2><canvas id="trendChart"></canvas></div>
+<div class="card"><h2>Failure Breakdown</h2><canvas id="pieChart"></canvas></div>
+
+<div class="card"><h2>Flake Rate by Action Type</h2><canvas id="actionChart"></canvas></div>
+<div class="card"><h2>Platform Comparison</h2><canvas id="platformChart"></canvas></div>
+
+<div class="card"><h2>Daily Test Volume</h2><canvas id="volumeChart"></canvas></div>
+<div class="card"><h2>Failure Duration Distribution</h2><canvas id="durationChart"></canvas></div>
+
+<div class="card full"><h2>Classification Trend Over Time</h2><canvas id="classificationTrendChart" style="max-height:200px"></canvas></div>
+
+<div class="card full"><h2>Flake Heatmap (Screen × Day)</h2><div style="overflow-x:auto;font-size:12px" id="heatmapContainer"></div></div>
+
+<div class="card full"><h2>Top Flaky Tests</h2>
+<table><thead><tr><th>Test</th><th>Platform</th><th>Screen</th><th>Fail Rate</th><th>Runs</th><th>Flake Bar</th><th>Common Issue</th></tr></thead><tbody id="flakeTableBody"></tbody></table></div>
+
+<div class="card full"><h2>Device Health</h2>
+<table><thead><tr><th>Device</th><th>Platform</th><th>Runs</th><th>Fail Rate</th><th>Flake Bar</th><th>Common Issue</th></tr></thead><tbody id="deviceTableBody"></tbody></table></div>
+
+<div class="card full"><h2>Latest Session</h2>
+<div id="latestSessionContainer"><span style="color:var(--muted)">Loading...</span></div></div>
+
+<div class="card full"><h2>Sessions</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Session</th><th>Platform</th><th>Device</th><th>Runs</th><th>Passed</th><th>Failed</th><th>Pass Rate</th><th>Avg Duration</th><th>First Run</th><th>Last Run</th></tr></thead><tbody id="sessionsTableBody"></tbody></table></div></div>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

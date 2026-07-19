@@ -1,8 +1,10 @@
+tests/
 *.db
 *.jsonl
 __pycache__/
-*.pyc
+.env
+.git/
+.github/
 .flakeiq/
 node_modules/
 *.tgz
-dist/

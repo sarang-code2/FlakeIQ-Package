@@ -1,0 +1,47 @@
+{
+  "name": "flakeiq",
+  "version": "1.0.0",
+  "description": "Test flake tracking + LLM failure classification for Playwright/mobilewright E2E tests",
+  "main": "reporter/flake-reporter.js",
+  "bin": {
+    "flakeiq": "./bin/flakeiq.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "python/",
+    "reporter/"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "test": "node --test tests/",
+    "start": "node bin/flakeiq.js serve"
+  },
+  "keywords": [
+    "playwright",
+    "flaky-tests",
+    "test-results",
+    "e2e",
+    "mobilewright",
+    "test-tracker",
+    "llm",
+    "classification"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.40"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourorg/FlakeIQ"
+  }
+}
