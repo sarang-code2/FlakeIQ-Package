@@ -8,21 +8,48 @@ Test flake tracking + LLM failure classification for Playwright/mobilewright E2E
 |---|---|---|
 | **Node.js 18+** | Reporter, CLI | [nodejs.org](https://nodejs.org/) |
 | **Python 3.11+** | Dashboard, Classifier | [python.org](https://www.python.org/downloads/) |
-| **Ollama** (optional) | AI failure classification | [ollama.com](https://ollama.com/) |
+| **Ollama** | AI failure classification | See below |
 
-> **Note:** The flake-reporter works without Python. Python is only needed for the dashboard and failure classifier.
-
-### Check if you have Python installed
+### Install Python
 
 ```bash
+# Check if installed
 python --version
-# or
-python3 --version
+
+# If not installed, download from:
+# https://www.python.org/downloads/
 ```
 
-If you see `Python 3.11.x` or higher, you're good. If not, install from [python.org](https://www.python.org/downloads/).
+**Windows users:** Check "Add Python to PATH" during installation.
 
-**Windows users:** Make sure to check "Add Python to PATH" during installation.
+### Install Ollama
+
+Ollama runs a local LLM to classify test failures as real bugs vs flakes.
+
+**macOS / Linux:**
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+**Windows:**
+```bash
+# Download from https://ollama.com/download
+# Or use winget:
+winget install Ollama.Ollama
+```
+
+**After install, pull the model and start the server:**
+```bash
+ollama pull llama3.2
+ollama serve
+```
+
+**Verify it's running:**
+```bash
+curl http://localhost:11434/api/tags
+```
+
+> **Note:** If Ollama is not running, FlakeIQ still works but failures are stored as "unclassified". Install Ollama to get AI-powered classification.
 
 ## Quick Start
 
@@ -45,22 +72,81 @@ View dashboard:
 npx flakeiq serve
 ```
 
+## Daily Workflow
+
+### Developer (Every PR)
+
+```bash
+# 1. Run your Playwright tests (reporter auto-captures results)
+npx playwright test
+
+# 2. Import results into FlakeIQ database
+npx flakeiq classify flake-results.jsonl
+
+# 3. View dashboard to see flake analysis
+npx flakeiq serve
+```
+
+### CI Pipeline (GitHub Actions)
+
+```yaml
+# .github/workflows/test.yml
+name: E2E Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test
+      # Import results into FlakeIQ
+      - run: npx flakeiq classify flake-results.jsonl
+      # Upload results as artifact
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flakeiq-results
+          path: |
+            flake-results.jsonl
+            flakeiq-data/flake.db
+```
+
+### Weekly Team Review
+
+```bash
+# View accumulated flake data over time
+npx flakeiq serve
+
+# Check flake rate trends
+# Check top flaky tests
+# Check device health
+# Make decisions on what to fix vs ignore
+```
+
 ## How It Works
 
 ```
-mobilewright_repo/                     FlakeIQ (npm package)
-================                        =====================
+your-repo/                            FlakeIQ
+==========                            =======
 
-npx mobilewright test
+npx playwright test
   |
   v  (FlakeReporter captures last 10 pw:api steps)
-flake-results.jsonl  -----------------> classify.py --> Ollama llama3.2 (on failures)
-                                            |
-                                            v
-                                        flake.db
-                                            |
-                                            v
-                                    dashboard.py --> browser (Chart.js)
+flake-results.jsonl  ---------------> classify.py --> Ollama llama3.2 (on failures)
+                                           |
+                                           v
+                                       flake.db
+                                           |
+                                           v
+                                   dashboard.py --> browser (Chart.js)
 ```
 
 ## Commands
@@ -80,10 +166,10 @@ flake-results.jsonl  -----------------> classify.py --> Ollama llama3.2 (on fail
 
 | Flag | Description |
 |---|---|
-| `--db PATH` | SQLite database path (default: `flake.db`) |
+| `--db PATH` | SQLite database path (default: `flakeiq-data/flake.db`) |
 | `--port NUM` | HTTP port (default: `8080`) |
 | `--host ADDR` | Bind address (default: `127.0.0.1`) |
-| `--seed` | Use `flake-seed.db` instead of real data |
+| `--seed` | Generate and use demo data |
 | `--open` | Auto-launch browser on start |
 
 ## API Endpoints
