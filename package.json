@@ -1,6 +1,6 @@
 {
   "name": "flakeiq",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Test flake tracking + LLM failure classification for Playwright/mobilewright E2E tests",
   "main": "reporter/flake-reporter.js",
   "bin": {
