@@ -2,6 +2,28 @@
 
 Test flake tracking + LLM failure classification for Playwright/mobilewright E2E tests.
 
+## Prerequisites
+
+| Requirement | Required For | Install |
+|---|---|---|
+| **Node.js 18+** | Reporter, CLI | [nodejs.org](https://nodejs.org/) |
+| **Python 3.11+** | Dashboard, Classifier | [python.org](https://www.python.org/downloads/) |
+| **Ollama** (optional) | AI failure classification | [ollama.com](https://ollama.com/) |
+
+> **Note:** The flake-reporter works without Python. Python is only needed for the dashboard and failure classifier.
+
+### Check if you have Python installed
+
+```bash
+python --version
+# or
+python3 --version
+```
+
+If you see `Python 3.11.x` or higher, you're good. If not, install from [python.org](https://www.python.org/downloads/).
+
+**Windows users:** Make sure to check "Add Python to PATH" during installation.
+
 ## Quick Start
 
 ```bash
@@ -43,28 +65,16 @@ flake-results.jsonl  -----------------> classify.py --> Ollama llama3.2 (on fail
 
 ## Commands
 
-| Command | Description |
-|---|---|
-| `npx flakeiq serve` | Start the dashboard server |
-| `npx flakeiq serve --port 3000` | Start on a custom port |
-| `npx flakeiq serve --seed` | Dashboard with demo data |
-| `npx flakeiq serve --open` | Auto-open browser |
-| `npx flakeiq classify results.jsonl` | Classify failures from JSONL |
-| `npx flakeiq seed` | Generate synthetic seed data |
-| `npx flakeiq status` | Show environment status |
-| `npx flakeiq reporter` | Show reporter setup instructions |
-
-## Requirements
-
-- **Node.js 18+**
-- **Python 3.11+** (auto-installed in venv on first use)
-- **Ollama** (optional) — only needed for LLM failure classification:
-  ```bash
-  brew install ollama
-  ollama pull llama3.2
-  ollama serve
-  ```
-  If Ollama is not running, `classify.py` skips LLM calls and stores failures as unclassified.
+| Command | Requires | Description |
+|---|---|---|
+| `npx flakeiq serve` | Python | Start the dashboard server |
+| `npx flakeiq serve --port 3000` | Python | Start on a custom port |
+| `npx flakeiq serve --seed` | Python | Dashboard with demo data |
+| `npx flakeiq serve --open` | Python | Auto-open browser |
+| `npx flakeiq classify results.jsonl` | Python + Ollama | Classify failures from JSONL |
+| `npx flakeiq seed` | Python | Generate synthetic seed data |
+| `npx flakeiq status` | — | Show environment status |
+| `npx flakeiq reporter` | — | Show reporter setup instructions |
 
 ## Dashboard Options
 
