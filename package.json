@@ -1,7 +1,7 @@
 {
   "name": "flakeiq",
-  "version": "1.0.7",
-  "description": "Test flake tracking + LLM failure classification for Playwright/mobilewright E2E tests",
+  "version": "1.0.11",
+  "description": "Test flake tracking + LLM failure classification for E2E tests — works with Playwright, Detox, Appium, Selenium, and any framework",
   "main": "reporter/flake-reporter.js",
   "bin": {
     "flakeiq": "./bin/flakeiq.js"
@@ -20,13 +20,16 @@
   },
   "keywords": [
     "playwright",
+    "detox",
+    "appium",
+    "selenium",
     "flaky-tests",
     "test-results",
     "e2e",
-    "mobilewright",
     "test-tracker",
     "llm",
-    "classification"
+    "classification",
+    "test-flake"
   ],
   "author": "",
   "license": "MIT",

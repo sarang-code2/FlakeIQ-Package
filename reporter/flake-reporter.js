@@ -25,8 +25,8 @@ class FlakeReporter {
       const a = result.annotations.find(x => x.type === type);
       return a ? a.description : '';
     };
-    const platform = findAnnotation('device.platform');
-    const deviceId = findAnnotation('device.id');
+    const platform = findAnnotation('device.platform') || test._projectId || '';
+    const deviceId = findAnnotation('device.id') || '';
 
     const record = {
       test_file: test.location.file,

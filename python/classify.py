@@ -180,7 +180,9 @@ def main():
         print(f"JSONL file not found: {args.jsonl}")
         sys.exit(1)
 
-    db = init_db()
+    db = sqlite3.connect(args.db)
+    db.executescript(SCHEMA)
+    db.commit()
     process_jsonl(args.jsonl, db)
     db.close()
 
